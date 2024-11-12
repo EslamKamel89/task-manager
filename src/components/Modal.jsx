@@ -9,7 +9,6 @@ const Modal = forwardRef(function Modal({ children, buttonCaption, onCancel }, r
         () => {
             return {
                 open: () => {
-                    console.log(dialogRef.current)
                     dialogRef.current.showModal();
                 },
             }
