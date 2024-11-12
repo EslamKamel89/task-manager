@@ -22,9 +22,19 @@ function App() {
       };
     })
   }
+
+  function handleCancelAddProject() {
+    setProjectState((prevState) => {
+      return {
+        ...prevState,
+        selectedProjectId: undefined,
+      };
+    });
+  }
+
   let content;
   if (projectState.selectedProjectId === null) {
-    content = <NewProject onAdd={handleAddProject} />;
+    content = <NewProject onAdd={handleAddProject} onCancel={handleCancelAddProject} />;
   } else if (projectState.selectedProjectId === undefined) {
     content = <NoProjectSelected onStartAddProject={handleStartAddProject} />;
   }
@@ -41,8 +51,10 @@ function App() {
         selectedProjectId: undefined,
         projects: [...prevState.projects, newProject],
       }
-    })
+    });
   }
+
+
 
   return (
     <main className="h-screen my-8 flex gap-8">
