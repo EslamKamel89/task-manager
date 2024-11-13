@@ -6,12 +6,6 @@ import SelectedProject from "./components/SelectedProject";
 
 function App() {
   const [projectState, setProjectState] = useState({
-    /*
-    ! selected project has there state undefined , null and have value
-    ? undefined >> no project selected && not adding new Project
-    ? null >> adding new Project
-    ? value >> project selected
-    */
     selectedProjectId: undefined,
     projects: [],
   });
@@ -32,14 +26,7 @@ function App() {
       };
     });
   }
-  const selectedProject = projectState.projects.find(project => project.id == projectState.selectedProjectId)
-  let content = <SelectedProject project={selectedProject} />;
-  // let content;
-  if (projectState.selectedProjectId === null) {
-    content = <NewProject onAdd={handleAddProject} onCancel={handleCancelAddProject} />;
-  } else if (projectState.selectedProjectId === undefined) {
-    content = <NoProjectSelected onStartAddProject={handleStartAddProject} />;
-  }
+
 
   function handleAddProject(projectData) {
     setProjectState((prevState) => {
@@ -64,7 +51,26 @@ function App() {
       }
     });
   }
-  console.log(projectState)
+  function handleDelete() {
+    setProjectState((prevState) => {
+      return {
+        ...prevState,
+        selectedProjectId: undefined,
+        projects: prevState.projects.filter(
+          (project) => project.id !== prevState.selectedProjectId
+        ),
+      };
+    });
+  }
+
+  const selectedProject = projectState.projects.find(project => project.id == projectState.selectedProjectId)
+  let content = <SelectedProject project={selectedProject} onDelete={handleDelete} />;
+  if (projectState.selectedProjectId === null) {
+    content = <NewProject onAdd={handleAddProject} onCancel={handleCancelAddProject} />;
+  } else if (projectState.selectedProjectId === undefined) {
+    content = <NoProjectSelected onStartAddProject={handleStartAddProject} />;
+  }
+
   return (
     <main className="h-screen my-8 flex gap-8">
       <ProjectSidebar
@@ -79,15 +85,3 @@ function App() {
 }
 
 export default App;
-/*
-{
-    "projects": [
-        {
-            "title": "13-Aug-2013",
-            "description": "Nisi omnis adipisci ",
-            "dueDate": "2017-03-04",
-            "id": 0.4756988607085837
-        }
-    ]
-}
-*/
